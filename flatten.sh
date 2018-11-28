@@ -5,7 +5,7 @@
 # |  _| | (_| | |_| ||  __/ | | |
 # |_| |_|\__,_|\__|\__\___|_| |_|
 #                                
-# Moves all files found in a directory tree into
+# Copies all files found in a directory tree into
 #   a single output directory.
 #
 shopt -s globstar
@@ -32,7 +32,7 @@ do
   if [[ ! -f "$i" ]]; then continue; fi
 
   md5sum=$(cat "$i" | md5sum | cut -f1 -d' ')
-  extension="${i##*.}"
+  extension=$(echo -n ${i##*.} | tr [:upper:] [:lower:])
 
   if [[ -z "$extension" ]]
   then
@@ -40,5 +40,5 @@ do
     continue
   fi
 
-  mv -v "$i" "$2/$md5sum.$extension"
+  cp -v "$i" "$2/$md5sum.$extension"
 done
